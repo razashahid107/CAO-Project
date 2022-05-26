@@ -4,14 +4,14 @@
 #include "WiFi.h"
 
 #define LED 2
-#define DHTPIN 4
+#define DHTPIN 15
 DHT dht(DHTPIN, DHT11);
 float heat;
 float humidity;
 float temperature;
 
-const char* SSID = "Ali";
-const char* PASS = "554151955";
+const char* SSID = "gg";
+const char* PASS = "hello123";
 
 AsyncWebServer server(80);
 
@@ -21,7 +21,10 @@ String readTemp() {
   temperature = dht.readTemperature();
   while (isnan(temperature)) {
     temperature = dht.readTemperature();
-  }  
+  }
+  digitalWrite(LED, HIGH);
+  delay(2000);
+  digitalWrite(LED, LOW);
   return String(temperature);
 }
 
@@ -56,72 +59,40 @@ const char index_html[] PROGMEM = R"rawliteral(
       font-family: Arial; 
       display: inline-block; 
       text-align: center;
+      background-image: url('https://www.almanac.com/sites/default/files/image_nodes/rainbow-weather.jpg');
     }
-    h2 {
+    h1 {
       font-size: 3.0rem;
+      color: black;
     }
     p {
-      font-size: 3.0rem;
+      font-size: 2.0rem;
     }
+
     body {
       max-width: 600px; 
       margin:0px auto; 
       padding-bottom: 25px;
     }
-    .switch {
-      position: relative; 
-      display: inline-block; 
-      width: 120px; 
-      height: 68px;
-    } 
-    .switch input {
-      display: none;
-    }
-    .slider {
-      position: absolute; 
-      top: 0; 
-      left: 0; 
-      right: 0; 
-      bottom: 0; 
-      background-color: #ccc; 
-      border-radius: 6px;
-    }
-    .slider:before {
-      position: absolute; 
-      content: ""; 
-      height: 52px; 
-      width: 52px; 
-      left: 8px; 
-      bottom: 8px; 
-      background-color: #fff; 
-      -webkit-transition: .4s; 
-      transition: .4s; 
-      border-radius: 3px
-    }
-    input:checked+.slider {
-      background-color: #b30000;
-    }
-    input:checked+.slider:before {
-      -webkit-transform: translateX(52px); 
-      -ms-transform: translateX(52px); 
-      transform: translateX(52px)
-    }
   </style>
 </head>
 <body>
-  <h1>ESP Web Server</h1>
+  <h1>ESP Weather Station</h1>
   <p>
-    <span>Temperature</span> 
+    <span>Temperature:</span> 
     <span id="temp">%TEMPERATURE%</span>
   </p>
   <p>
-    <span>Humidity</span> 
+    <span>Humidity:</span> 
     <span id="humidity">%HUMIDITY%</span>
   </p>
   <p>
-    <span>Heat Index</span> 
+    <span>Heat Index:</span> 
     <span id="heat">%HEAT%</span>
   </p>
+  <h1 style="color: rgb(159, 10, 192);">
+    Happy Weather Predicting
+  </h1>
   <script>
     setInterval(function ( ) {
       var xhttp = new XMLHttpRequest();
@@ -189,7 +160,7 @@ void setup() {
  WiFi.begin(SSID, PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.println(".");
+    Serial.print(".");
   }
   Serial.println("Connected to WiFi");
   // Print ESP32 Local IP Address
@@ -217,21 +188,4 @@ void setup() {
 
 void loop() {
 
-  delay(500);
-//
-//  humidity = dht.readHumidity();
-//  temperature = dht.readTemperature();
-//  // Read temperature as Fahrenheit (isFahrenheit = true)
-//  float f = dht.readTemperature(true);
-//
-//  // Check if any reads failed and exit early (to try again).
-//  if (isnan(humidity) || isnan(temperature) || isnan(f)) {
-//    Serial.println("Failed to read from DHT sensor!");
-//    return;
-//  }
-//
-//  // Compute heat index in Fahrenheit (the default)
-//  // float hif = dht.computeHeatIndex(f, h);
-//  // Compute heat index in Celsius (isFahreheit = false)
-//  heat = dht.computeHeatIndex(temperature, humidity, false);
 }

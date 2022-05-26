@@ -1,0 +1,81 @@
+<!DOCTYPE HTML><html>
+<head>
+  <title>ESP Web Server</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <style>
+    html {
+      font-family: Arial; 
+      display: inline-block; 
+      text-align: center;
+      background-image: url('https://www.almanac.com/sites/default/files/image_nodes/rainbow-weather.jpg');
+    }
+    h1 {
+      font-size: 3.0rem;
+      color: black;
+    }
+    p {
+      font-size: 2.0rem;
+    }
+
+    body {
+      max-width: 600px; 
+      margin:0px auto; 
+      padding-bottom: 25px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ESP Weather Station</h1>
+  <p>
+    <span>Temperature:</span> 
+    <span id="temp">%TEMPERATURE%</span>
+  </p>
+  <p>
+    <span>Humidity:</span> 
+    <span id="humidity">%HUMIDITY%</span>
+  </p>
+  <p>
+    <span>Heat Index:</span> 
+    <span id="heat">%HEAT%</span>
+  </p>
+  <h1 style="color: rgb(159, 10, 192);">
+    Happy Weather Predicting
+  </h1>
+  <script>
+    setInterval(function ( ) {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("temp").innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("GET", "/temp", true);
+      xhttp.send();
+    }, 2000 ) ;
+
+    setInterval(function ( ) {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("humidity").innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("GET", "/humidity", true);
+      xhttp.send();
+    }, 2000 ) ;
+
+    setInterval(function ( ) {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("heat").innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("GET", "/heat", true);
+      xhttp.send();
+    }, 2000 ) ;
+
+    </script>
+</body>
+</html>
